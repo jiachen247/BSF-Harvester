@@ -2,7 +2,7 @@ import os
 import urllib2
 from datetime import datetime
 
-FRIST_NUMBER = {8,9}
+FRIST_NUMBER = [8,9]
 BASE_URL_FORMAT = "https://www.bsfinternational.org/BSFAjaxUtils/Dispatch?action=AjaxGetClassMeetingInfo&phoneNumber={}&searchByPhone=true".format
 
 PATH_DUMP = "./DUMP"
