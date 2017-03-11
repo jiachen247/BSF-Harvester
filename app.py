@@ -1,6 +1,9 @@
+#!/usr/bin/env python
+
 import os
 import urllib
 import urllib2
+import ssl
 from datetime import datetime
 import sys
 
@@ -48,12 +51,18 @@ def init():
     createNewDumpDir()
 
 def harvest():
+    def getSSLcontextTrustAllStrategy():
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        return ctx
+
     def generateNumber(base_num,x):
         return FRIST_NUMBER[base_num]*10000000 + x
     def get(number):
         HTTP_PARAMS['phoneNumber'] = str(number)
         req = urllib2.Request(HTTP_URL, HTTP_PARAMS, HTTP_HEADERS)
-        response = urllib2.urlopen(req)
+        response = urllib2.urlopen(req,context=getSSLcontextTrustAllStrategy())
         return response.read()
 
 
