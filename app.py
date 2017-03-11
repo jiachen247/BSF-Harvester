@@ -1,9 +1,27 @@
 import os
+import urllib
 import urllib2
 from datetime import datetime
+import sys
 
 FRIST_NUMBER = [8,9]
-BASE_URL_FORMAT = "https://www.bsfinternational.org/BSFAjaxUtils/Dispatch?action=AjaxGetClassMeetingInfo&phoneNumber={}&searchByPhone=true".format
+HTTP_URL = "https://www.bsfinternational.org/BSFAjaxUtils/Dispatch"
+
+HTTP_HEADERS = {
+    "Host": "www.bsfinternational.org",
+    "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0",
+    "Accept": "application/json, text/javascript, */*; q=0.01",
+    "Accept-Language": "en-US,en;q=0.5",
+    "Referer": "https://www.bsfinternational.org/lessons",
+    "X-Requested-With":"XMLHttpRequest"
+}
+HTTP_PARAMS = {
+    "action":"AjaxGetClassMeetingInfo",
+    "phoneNumber":"placeholder",
+    "classNumber":"936",
+    "searchByPhone":"true"
+}
+
 
 PATH_DUMP = "./DUMP"
 PATH_DUMP_BK_FORMAT ="./DUMP-{}.bak".format
@@ -32,12 +50,21 @@ def init():
 def harvest():
     def generateNumber(base_num,x):
         return FRIST_NUMBER[base_num]*10000000 + x
+    def get(number):
+        HTTP_PARAMS['phoneNumber'] = str(number)
+        req = urllib2.Request(HTTP_URL, HTTP_PARAMS, HTTP_HEADERS)
+        response = urllib2.urlopen(req)
+        return response.read()
+
 
     for base_num in range(1,2):
-        for x in 1,10:
+        for x in range(1,9):
             number = generateNumber(base_num,x)
             print "Trying {}".format(number)
+            #result = getByNumber()
 
+    print get(sys.argv[1])
+    print "hello"
     #response = urllib2.urlopen("http://example.com/foo/bar").read()
     return
 
