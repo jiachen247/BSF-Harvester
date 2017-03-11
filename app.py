@@ -1,7 +1,9 @@
 import os
+import urllib2
 from datetime import datetime
 
 FRIST_NUMBER = {8,9}
+BASE_URL_FORMAT = "https://www.bsfinternational.org/BSFAjaxUtils/Dispatch?action=AjaxGetClassMeetingInfo&phoneNumber={}&searchByPhone=true".format
 
 PATH_DUMP = "./DUMP"
 PATH_DUMP_BK_FORMAT ="./DUMP-{}.bak".format
@@ -11,6 +13,7 @@ def init():
     print "Initializing BSF Harvester..."
     def createNewDumpDir():
         os.mkdir(PATH_DUMP)
+
     def backupDumpDir():
         timestamp = str(datetime.now())
         bk_dir = PATH_DUMP_BK_FORMAT(timestamp)
@@ -27,16 +30,20 @@ def init():
     createNewDumpDir()
 
 def harvest():
-    return
-def cleanup():
+    def generateNumber(base_num,x):
+        return FRIST_NUMBER[base_num]*10000000 + x
+
+    for base_num in range(1,2):
+        for x in 1,10:
+            number = generateNumber(base_num,x)
+            print "Trying {}".format(number)
+
+    #response = urllib2.urlopen("http://example.com/foo/bar").read()
     return
 
 def main():
     init()
-
     harvest()
-
-    cleanup()
 
 if __name__ == '__main__':
     main()
