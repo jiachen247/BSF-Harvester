@@ -25,6 +25,7 @@ HTTP_PARAMS = {
     "classNumber":"936",
     "searchByPhone":"true"
 }
+HTTP_PARAMS_ENCODED = data = urllib.urlencode(HTTP_PARAMS)
 
 
 PATH_DUMP = "./DUMP"
@@ -62,7 +63,7 @@ def harvest():
         return FRIST_NUMBER[base_num]*10000000 + x
     def get(number):
         HTTP_PARAMS['phoneNumber'] = str(number)
-        req = urllib2.Request(HTTP_URL, HTTP_PARAMS, HTTP_HEADERS)
+        req = urllib2.Request(HTTP_URL, HTTP_PARAMS_ENCODED, HTTP_HEADERS)
         response = urllib2.urlopen(req,context=getSSLcontextTrustAllStrategy())
         return response.read()
 
