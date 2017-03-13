@@ -71,15 +71,18 @@ def harvest():
         return json.loads(response.read())
 
 
-    #for base_num in range(1,2):
-        #for x in range(1,9999999):
-            #number = generateNumber(base_num,x)
-            #print "Trying {}".format(number)
-            #result = getByNumber()
+    for base_num in range(1,2):
+        for x in range(sys.argv[1]-3,sys.argv[1]+3):
+            number = generateNumber(base_num,x)
+            print "Trying {}".format(number)
+            data = get(number)
 
-    data = get(sys.argv[1])
-    print FILE_DUMP_FORMAT(data["classNumber"] , data["meetingChurch"])
-    print "hello"
+            if len(data) == 0:
+                print "NUMBER NOT IN DATABASE...\n"
+                continue
+            data = data[0]
+            print FILE_DUMP_FORMAT(data["classNumber"], data["meetingChurch"])
+    print "Program finished :)"
     return
 
 def main():
