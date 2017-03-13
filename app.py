@@ -11,7 +11,10 @@ import json
 FRIST_NUMBER = [8,9]
 HTTP_URL_FORMAT = "https://www.bsfinternational.org/BSFAjaxUtils/Dispatch?action=AjaxGetClassMeetingInfo&searchByPhone=true&phoneNumber={}".format
 
-FILE_DUMP_FORMAT = "{}.{}".format
+PATH_DUMP = "./DUMP"
+PATH_DUMP_BK_FORMAT ="./DUMP-{}.bak".format
+
+FILE_DUMP_PATH_FORMAT = (PATH_DUMP + "/{}.{}").format
 FILE_DUMP_HEADERS_FORMAT = ("==================================="
                             " Generated with BSF_HARVESTER "
                             " @nehcaij"
@@ -41,10 +44,6 @@ HTTP_PARAMS = {
 HTTP_PARAMS_ENCODED = data = urllib.urlencode(HTTP_PARAMS)
 
 
-PATH_DUMP = "./DUMP"
-PATH_DUMP_BK_FORMAT ="./DUMP-{}.bak".format
-
-timestamp = str(datetime.now())
 
 def init():
     print "Initializing BSF Harvester..."
@@ -52,6 +51,7 @@ def init():
         os.mkdir(PATH_DUMP)
 
     def backupDumpDir():
+        timestamp = str(datetime.now())
         bk_dir = PATH_DUMP_BK_FORMAT(timestamp)
         os.rename(PATH_DUMP,bk_dir)
         print "Moved {} to {}!".format(PATH_DUMP,bk_dir)
@@ -72,7 +72,7 @@ def harvest():
         f.write(number)
 
     def writeDumpFileHeaders(dump_fn,data):
-
+        timestamp = str(datetime.now())
         classDesc = data["classDesc"]
         classNumber = data["classNumber"]
         className = data["className"]
@@ -122,8 +122,9 @@ def harvest():
             classNumber = data["classNumber"]
             meetingChurch = data["meetingChurch"].replace(" ", "-")
 
-            dump_fn = FILE_DUMP_FORMAT(classNumber, meetingChurch)
+            dump_fn = FILE_DUMP_PATH_FORMAT(classNumber, meetingChurch)
 
+            print os.path.isfile(dump_fn)
             if not os.path.isfile(dump_fn):
                 writeDumpFileHeaders(dump_fn,data)
 
