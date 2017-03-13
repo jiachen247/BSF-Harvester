@@ -114,14 +114,10 @@ def harvest():
 
             dump_fn = FILE_DUMP_PATH_FORMAT(classNumber, meetingChurch)
 
-            print os.path.isfile(dump_fn)
             if not os.path.isfile(dump_fn):
                 writeDumpFileHeaders(dump_fn,data)
 
             appendNumber(dump_fn,str(number))
-            appendNumber(dump_fn,str(number))
-
-            print "added"
     print "Program finished :)"
     return
 
