@@ -14,7 +14,7 @@ HTTP_URL_FORMAT = "https://www.bsfinternational.org/BSFAjaxUtils/Dispatch?action
 PATH_DUMP = "./DUMP"
 PATH_DUMP_BK_FORMAT ="./DUMP-{}.bak".format
 
-FILE_DUMP_PATH_FORMAT = (PATH_DUMP + "/{}.{}").format
+FILE_DUMP_PATH_FORMAT = (PATH_DUMP + "/{}.{}.bsf").format
 FILE_DUMP_HEADERS_FORMAT = ("===================================\n"
                             " Generated with BSF_HARVESTER\n"
                             " @nehcaij\n"
@@ -35,15 +35,6 @@ HTTP_HEADERS = {
     "Referer": "https://www.bsfinternational.org/lessons",
     "X-Requested-With":"XMLHttpRequest"
 }
-HTTP_PARAMS = {
-    "action":"AjaxGetClassMeetingInfo",
-    "phoneNumber":"placeholder",
-    "classNumber":"936",
-    "searchByPhone":"true"
-}
-HTTP_PARAMS_ENCODED = data = urllib.urlencode(HTTP_PARAMS)
-
-
 
 def init():
     print "Initializing BSF Harvester..."
@@ -69,7 +60,7 @@ def harvest():
 
     def appendNumber(fn,number):
         f = open(fn, "a")
-        f.write(number)
+        f.write("{}\n".format(number))
 
     def writeDumpFileHeaders(dump_fn,data):
         timestamp = str(datetime.now())
@@ -101,14 +92,12 @@ def harvest():
     def generateNumber(base_num,x):
         return FRIST_NUMBER[base_num]*10000000 + x
     def get(number):
-        HTTP_PARAMS['phoneNumber'] = str(number)
         req = urllib2.Request(HTTP_URL_FORMAT(number),headers=HTTP_HEADERS)
         response = urllib2.urlopen(req,context=getSSLcontextTrustAllStrategy())
         return json.loads(response.read())
 
-
     for base_num in range(2):
-        for x in range(int(sys.argv[1])-2,int(sys.argv[1])+2):
+        for x in range(0,9999999):
             print x
             number = generateNumber(base_num,x)
             print "Trying {}".format(number)
