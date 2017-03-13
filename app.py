@@ -84,7 +84,8 @@ def harvest():
         f = open(dump_fn, "w+")
         f.write(FILE_DUMP_HEADERS_FORMAT(timestamp,
                                          classNumber,
-                                         className,classDesc,
+                                         className,
+                                         classDesc,
                                          meetingChurch,
                                          meetingChurchAddress,
                                          meetingDay,
@@ -107,7 +108,7 @@ def harvest():
 
 
     for base_num in range(1,2):
-        for x in range(int(sys.argv[1])-3,int(sys.argv[1])+3):
+        for x in range(int(sys.argv[1])-1,int(sys.argv[1])+1):
             number = generateNumber(base_num,x)
             print "Trying {}".format(number)
             data = get(number)
@@ -129,7 +130,7 @@ def harvest():
             appendNumber(dump_fn,str(number))
             appendNumber(dump_fn,str(number))
 
-            print FILE_DUMP_FORMAT(data["classNumber"], )
+            print "added"
     print "Program finished :)"
     return
 
