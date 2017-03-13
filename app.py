@@ -6,7 +6,6 @@ import urllib2
 import ssl
 from datetime import datetime
 import sys
-import json
 
 FRIST_NUMBER = [8,9]
 HTTP_URL = "https://www.bsfinternational.org/BSFAjaxUtils/Dispatch"
@@ -74,7 +73,7 @@ def harvest():
             print "Trying {}".format(number)
             #result = getByNumber()
 
-    print json.dumps(get(sys.argv[1]))
+    print get(sys.argv[1])
     print "hello"
     #response = urllib2.urlopen("http://example.com/foo/bar").read()
     return
