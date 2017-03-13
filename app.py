@@ -107,8 +107,9 @@ def harvest():
         return json.loads(response.read())
 
 
-    for base_num in range(1,2):
+    for base_num in range(2):
         for x in range(int(sys.argv[1])-2,int(sys.argv[1])+2):
+            print x
             number = generateNumber(base_num,x)
             print "Trying {}".format(number)
             data = get(number)
