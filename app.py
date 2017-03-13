@@ -15,17 +15,17 @@ PATH_DUMP = "./DUMP"
 PATH_DUMP_BK_FORMAT ="./DUMP-{}.bak".format
 
 FILE_DUMP_PATH_FORMAT = (PATH_DUMP + "/{}.{}").format
-FILE_DUMP_HEADERS_FORMAT = ("==================================="
-                            " Generated with BSF_HARVESTER "
-                            " @nehcaij"
-                            " {}\n"
-                            " No: {}"
-                            " Name: {}"
-                            " Desc: {}"
-                            " Church: {}"
-                            " Address: {}"
-                            " Day: {}"
-                            " Time: {}"
+FILE_DUMP_HEADERS_FORMAT = ("===================================\n"
+                            " Generated with BSF_HARVESTER\n"
+                            " @nehcaij\n"
+                            " {}\n\n"
+                            " No: {}\n"
+                            " Name: {}\n"
+                            " Desc: {}\n"
+                            " Church: {}\n"
+                            " Address: {}\n"
+                            " Day: {}\n"
+                            " Time: {}\n"
                             "===================================\n\n").format
 HTTP_HEADERS = {
     "Host": "www.bsfinternational.org",
