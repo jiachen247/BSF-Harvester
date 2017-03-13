@@ -8,7 +8,7 @@ from datetime import datetime
 import sys
 
 FRIST_NUMBER = [8,9]
-HTTP_URL = "https://www.bsfinternational.org/BSFAjaxUtils/Dispatch"
+HTTP_URL_FORMAT = "https://www.bsfinternational.org/BSFAjaxUtils/Dispatch?action=AjaxGetClassMeetingInfo&searchByPhone=true&phoneNumber={}".format
 
 HTTP_HEADERS = {
     "Host": "www.bsfinternational.org",
@@ -62,7 +62,7 @@ def harvest():
         return FRIST_NUMBER[base_num]*10000000 + x
     def get(number):
         HTTP_PARAMS['phoneNumber'] = str(number)
-        req = urllib2.Request(HTTP_URL, HTTP_PARAMS_ENCODED, HTTP_HEADERS)
+        req = urllib2.Request(HTTP_URL_FORMAT(number),headers=HTTP_HEADERS)
         response = urllib2.urlopen(req,context=getSSLcontextTrustAllStrategy())
         return response.read()
 
