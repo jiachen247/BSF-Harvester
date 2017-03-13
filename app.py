@@ -126,8 +126,8 @@ def harvest():
             if not os.path.isfile(dump_fn):
                 writeDumpFileHeaders(dump_fn,data)
 
-            appendNumber(number)
-            appendNumber(number)
+            appendNumber(dump_fn,number)
+            appendNumber(dump_fn,number)
 
             print FILE_DUMP_FORMAT(data["classNumber"], )
     print "Program finished :)"
