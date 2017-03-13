@@ -77,10 +77,9 @@ def harvest():
             #print "Trying {}".format(number)
             #result = getByNumber()
 
-    data =  get(sys.argv[1])
-    print FILE_DUMP_FORMAT(data.classNumber , data.meetingChurch)
+    data = get(sys.argv[1])
+    print FILE_DUMP_FORMAT(data["classNumber"] , data["meetingChurch"])
     print "hello"
-    #response = urllib2.urlopen("http://example.com/foo/bar").read()
     return
 
 def main():
