@@ -98,7 +98,6 @@ def harvest():
 
     for base_num in range(2):
         for x in range(0,9999999):
-            print x
             number = generateNumber(base_num,x)
             print "Trying {}".format(number)
             data = get(number)
