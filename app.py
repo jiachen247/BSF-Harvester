@@ -6,9 +6,13 @@ import urllib2
 import ssl
 from datetime import datetime
 import sys
+import json
 
 FRIST_NUMBER = [8,9]
 HTTP_URL_FORMAT = "https://www.bsfinternational.org/BSFAjaxUtils/Dispatch?action=AjaxGetClassMeetingInfo&searchByPhone=true&phoneNumber={}".format
+
+FILE_DUMP_FORMAT = "{}-{}".format
+
 
 HTTP_HEADERS = {
     "Host": "www.bsfinternational.org",
@@ -64,16 +68,17 @@ def harvest():
         HTTP_PARAMS['phoneNumber'] = str(number)
         req = urllib2.Request(HTTP_URL_FORMAT(number),headers=HTTP_HEADERS)
         response = urllib2.urlopen(req,context=getSSLcontextTrustAllStrategy())
-        return response.read()
+        return json.loads(response.read())
 
 
-    for base_num in range(1,2):
-        for x in range(1,9):
-            number = generateNumber(base_num,x)
-            print "Trying {}".format(number)
+    #for base_num in range(1,2):
+        #for x in range(1,9999999):
+            #number = generateNumber(base_num,x)
+            #print "Trying {}".format(number)
             #result = getByNumber()
 
-    print get(sys.argv[1])
+    data =  get(sys.argv[1])
+    print FILE_DUMP_FORMAT(data.classNumber , data.meetingChurch)
     print "hello"
     #response = urllib2.urlopen("http://example.com/foo/bar").read()
     return
