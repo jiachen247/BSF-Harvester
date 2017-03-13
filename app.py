@@ -11,9 +11,19 @@ import json
 FRIST_NUMBER = [8,9]
 HTTP_URL_FORMAT = "https://www.bsfinternational.org/BSFAjaxUtils/Dispatch?action=AjaxGetClassMeetingInfo&searchByPhone=true&phoneNumber={}".format
 
-FILE_DUMP_FORMAT = "{}-{}".format
-
-
+FILE_DUMP_FORMAT = "{}.{}".format
+FILE_DUMP_HEADERS_FORMAT = ("==================================="
+                            " Generated with BSF_HARVESTER "
+                            " @nehcaij"
+                            " {}\n"
+                            " No: {}"
+                            " Name: {}"
+                            " Desc: {}"
+                            " Church: {}"
+                            " Address: {}"
+                            " Day: {}"
+                            " Time: {}"
+                            "===================================\n\n").format
 HTTP_HEADERS = {
     "Host": "www.bsfinternational.org",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0",
@@ -34,6 +44,7 @@ HTTP_PARAMS_ENCODED = data = urllib.urlencode(HTTP_PARAMS)
 PATH_DUMP = "./DUMP"
 PATH_DUMP_BK_FORMAT ="./DUMP-{}.bak".format
 
+timestamp = str(datetime.now())
 
 def init():
     print "Initializing BSF Harvester..."
@@ -41,7 +52,6 @@ def init():
         os.mkdir(PATH_DUMP)
 
     def backupDumpDir():
-        timestamp = str(datetime.now())
         bk_dir = PATH_DUMP_BK_FORMAT(timestamp)
         os.rename(PATH_DUMP,bk_dir)
         print "Moved {} to {}!".format(PATH_DUMP,bk_dir)
@@ -56,6 +66,31 @@ def init():
     createNewDumpDir()
 
 def harvest():
+
+    def appendNumber(fn,number):
+        f = open(fn, "a")
+        f.write(number)
+
+    def writeDumpFileHeaders(dump_fn,data):
+
+        classDesc = data["classDesc"]
+        classNumber = data["classNumber"]
+        className = data["className"]
+        meetingChurch = data["meetingChurch"]
+        meetingTime = data["meetingTime"]
+        meetingDay = data["meetingDay"]
+        meetingChurchAddress = data["meetingChurchAddress"]
+
+        f = open(dump_fn, "w+")
+        f.write(FILE_DUMP_HEADERS_FORMAT(timestamp,
+                                         classNumber,
+                                         className,classDesc,
+                                         meetingChurch,
+                                         meetingChurchAddress,
+                                         meetingDay,
+                                         meetingTime))
+        f.close()
+
     def getSSLcontextTrustAllStrategy():
         ctx = ssl.create_default_context()
         ctx.check_hostname = False
@@ -80,8 +115,21 @@ def harvest():
             if len(data) == 0:
                 print "NUMBER NOT IN DATABASE...\n"
                 continue
+            print "SUCCESS!! NUMBER FOUND - {} :)".format(number)
             data = data[0]
-            print FILE_DUMP_FORMAT(data["classNumber"], data["meetingChurch"])
+
+            classNumber = data["classNumber"]
+            meetingChurch = data["meetingChurch"].replace(" ", "-")
+
+            dump_fn = FILE_DUMP_FORMAT(classNumber, meetingChurch)
+
+            if not os.path.isfile(dump_fn):
+                writeDumpFileHeaders(dump_fn,data)
+
+            appendNumber(number)
+            appendNumber(number)
+
+            print FILE_DUMP_FORMAT(data["classNumber"], )
     print "Program finished :)"
     return
 
